@@ -1,34 +1,9 @@
-# Chaos
+## Chaos Workshop 
 
-> Chaos is a ladder.
+Name: Sruthi Talluri 
+Unity: stallur2
 
-We will explore basic fault and event injection to understand how a simple service responds to different events. This workshop will be a bit more exploratory than some of our other workshops, so this will be a good chance to practice using Docker.
-
-![cpu-burn](img/cpu-burn.png)
-
-## Setup
-
-Pull the image needed for this workshop.
-
-```bash
-bakerx pull chaos CSC-DevOps/Images#Spring2020
-```
-
-Clone this repository.
-
-```bash
-git clone https://github.com/CSC-DevOps/Chaos
-```
-
-Open a terminal inside the directory and install npm packages.
-
-```bash
-cd chap
-npm install
-# One more inner set of packages for dashboard.
-cd dashboard
-npm install
-```
+### Setup
 
 Inside the `Chaos\chap` directory, start the instances:
 
@@ -45,15 +20,18 @@ node index.js serve
 
 You should see a dashboard available on your host machine http://localhost:8080/
 
-## Workshop
+Below is the image showing the dashboard: 
+[!Dashboard](https://media.github.ncsu.edu/user/16063/files/6fc15480-a8ff-11eb-88ad-56e0fafb6d20)
 
-### Control and Canary server.
+### Workshop
 
-Your control server is running a service with several endpoints, including:
+#### Control and Canary server.
+
+The control server is running a service with several endpoints, including:
 
 * http://192.168.44.102:3080/ --- displays a simple hello world message.
-* http://192.168.44.102:3080/stackless --- computes a medium workload.
-* http://192.168.44.102:3080/work --- computes a heavy workload.
+
+[!Hello World](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-934f-6dfd91dfd6b0)
 
 Inside the server, three docker containers provide simple node express servers that service these requests.
 A reverse-proxy will route uses a simple round robin algorithm to load balance the requests between the containers.
@@ -62,40 +40,32 @@ One more endpoint exists for the dashboard:
 
 * http://192.168.44.102:3080/health --- returns basic metrics, including memory, cpu, and latency of services.
 
+[!Health](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-879a-3a00735f3627)
+
 Finally, the canary server runs the same exact services, but at http://192.168.66.108/
 
-### Dashboard
-
-![dashboard](img/dashboard.png)
+#### Dashboard
 
 The dashboard displays your running infrastructure.  The container's overall health is visualized by a small colored square. 
 
 A line chart displays statistics gathered from the `/health` endpoint. A sidebar menu displays some options for updating the line chart. By clicking the "CPU Load" menu item, you will see the CPU load be compared between the two servers. By clicking the "Latency" menu item, you will see the Latency as calculated by the average time for a request to be serviced between successive health check calls.
 
-You can visualize the effects of traffic on the metrics by visiting the servers, either using a load script, curl command, or siege. For example, you can see a brief spike on the control server by running:
+You can visualize the effects of traffic on the metrics by visiting the servers, either using a load script, curl command, or siege. 
+
+For example, We can see a brief spike on the control server by running:
+
 
     siege -b -t30s http://192.168.44.102:3080/stackless
 
-The dashboard can fill out with events once left running long enough. By reloading the page or changing metrics, it will reset.
+Below is the image showing output after running the command: 
 
-### Tools of Chaos
+![Dashboard 2](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-9f93-a209d440b3cf)
 
-Inside the /chaos directory, we will find several scripts that will in general cause mayhem, including:
-
-* Burning up the CPU.
-* Filling up the disk.
-* Dropping random packets.
-* Killing processes/containers.
-
-Many of the scripts use traffic control, an advanced tool for setting networking policy. For example, running this will corrupt 50% of network packets.
-
-    tc qdisc add dev enp0s8 root netem corrupt 50%
-
-## Experimentation
+### Experimentation
 
 While breaking things are fun, we usually want to do so in a principled manner, so we can learn about how our infrastructure handles failure and discover unexpected results.
 
-### Burning up the CPU of a single docker container. 💥
+### Burning up the CPU of a single docker container. 
 
 We will conduct a simple experiment where we will induce a heavy CPU load on container within the green canary server. We will then observe differences in metrics across the control and canary server.
 
@@ -126,20 +96,21 @@ Induce load on the green canary server.
 
     siege -b -t30s http://192.168.66.108:3080/stackless
 
+![LoadInduced](https://media.github.ncsu.edu/user/16063/files/70f28180-a8ff-11eb-8812-884c2dad21bb)
+
 Now, induce load on the control server.
 
     siege -b -t30s http://192.168.44.102:3080/stackless
 
-You should see something like this:
+![LoadInduced2](https://media.github.ncsu.edu/user/16063/files/70f28180-a8ff-11eb-8843-a1bc57747b0a)
 
-![cpu-burn](img/cpu-burn.png)
 
-*What did we see*? We see a large increase in latency in green canary server, meaning client requests are taking much longer (and may be timing out).
+*What did we see*? We see a large increase in latency in green canary server, meaning client requests are taking much longer (and may be timing out).Also, even though the CPU of one of the containers will be high in the green servers requests will go to them. So, it will take time for the response.
 
 *What have we learned?* Because our round-robin load balancer ignores cpu load, it will continue to route requests to an overloaded instance, who will take much longer in servicing requests. The implication is that we should be mindful of avoiding routing to overloaded instances, which can increase quality of service.
 
 
-### Network traffic 🚦
+##### Network traffic 
 
 Let's start another experiment, were we mess with the network traffic.
 
