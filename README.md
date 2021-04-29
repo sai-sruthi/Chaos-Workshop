@@ -208,3 +208,6 @@ The surprising fact did I learned is that only when the container was running th
 
 How could you extend this workshop to collect more measures and devise an automated experiment to understand which event/failure causes the most problems?
 
+Extension od this workshop can be done to collect more measures, and also create automated experiments. The measures that can be added which would lead to failures are Simulating network loss, killing processes, inducing delays, present in the chaos folder. Further, we can experiment stress testing, adding curl commands to stop and delete processes. The measures like network loss, jitter can be computed and show how few changes imapct them. The tests can be simulatneously run on both servers and see the differences in the blue and green servers. Each acting as a baseline for few cases and as a test in other. 
+
+An automated experiment to understand which failure causes most problems can be done everytime by running the seige command and checking the metrics and setting up a cuttoffs and asking to redeploy if thhey are not met. We could also switch the servers to a stable baseline server in such case. 
