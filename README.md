@@ -1,7 +1,9 @@
 ## Chaos Workshop 
 
 Name: Sruthi Talluri 
+
 Unity: stallur2
+
 
 ### Setup
 
@@ -21,6 +23,7 @@ node index.js serve
 You should see a dashboard available on your host machine http://localhost:8080/
 
 Below is the image showing the dashboard: 
+
 [!Dashboard](https://media.github.ncsu.edu/user/16063/files/6fc15480-a8ff-11eb-88ad-56e0fafb6d20)
 
 ### Workshop
@@ -31,7 +34,7 @@ The control server is running a service with several endpoints, including:
 
 * http://192.168.44.102:3080/ --- displays a simple hello world message.
 
-[!Hello World](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-934f-6dfd91dfd6b0)
+[!HelloWorld](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-934f-6dfd91dfd6b0)
 
 Inside the server, three docker containers provide simple node express servers that service these requests.
 A reverse-proxy will route uses a simple round robin algorithm to load balance the requests between the containers.
@@ -59,7 +62,7 @@ For example, We can see a brief spike on the control server by running:
 
 Below is the image showing output after running the command: 
 
-![Dashboard 2](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-9f93-a209d440b3cf)
+![Dashboard2](https://media.github.ncsu.edu/user/16063/files/7059eb00-a8ff-11eb-9f93-a209d440b3cf)
 
 ### Experimentation
 
