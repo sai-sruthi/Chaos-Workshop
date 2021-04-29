@@ -1,0 +1,17 @@
+{
+  "name": "chap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "got": "^11.0.2",
+    "systeminformation": "^4.23.5",
+    "yargs": "^15.3.1"
+  }
+}
