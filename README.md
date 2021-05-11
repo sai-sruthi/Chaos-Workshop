@@ -1,9 +1,9 @@
 ## Chaos Workshop 
 
+
+The workshop is the solution for : https://github.com/CSC-DevOps/Chaos
+
 Name: Sruthi Talluri 
-
-Unity: stallur2
-
 
 ### Setup
 
